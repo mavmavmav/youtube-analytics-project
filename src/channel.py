@@ -36,7 +36,7 @@ class Channel:
         """
         Операция сложения 1arg и 2arg
         """
-        return int(self.subs_count + other.subs_count)
+        return int(self.subs_count) + int(other.subs_count)
 
     def __sub__(self, other):
         """
