@@ -11,7 +11,7 @@ class Channel:
     def __init__(self, channel_id: str) -> None:
         """Экземпляр инициализирует id канала. Дальше все данные будут подтягиваться по API."""
 
-        youtube = Channel.get_service()
+        youtube = self.get_service()
         response = youtube.channels().list(id=channel_id,
                                            part='snippet, statistics')
         self.response = response.execute()
@@ -25,9 +25,58 @@ class Channel:
         self.video_count = data_info[0]['statistics']['videoCount']
         self.view_count = data_info[0]['statistics']['viewCount']
 
+
+    def __str__(self):
+        """
+        Отображение информации для пользователя
+        """
+        return f'{self.title} ({self.url})'
+
+    def __add__(self, other):
+        """
+        Операция сложения 1arg и 2arg
+        """
+        return int(self.subs_count + other.subs_count)
+
+    def __sub__(self, other):
+        """
+        Операция вычитания 1arg и 2arg
+        """
+        return int(self.subs_count) - int(other.subs_count)
+
+    def __gt__(self, other):
+        """
+        Операция 1arg > 2arg
+        """
+        return self.subs_count > other.subs_count
+
+    def __ge__(self, other):
+        """
+        Операция 1arg >= 2arg
+        """
+        return self.subs_count >= other.subs_count
+
+    def __lt__(self, other):
+        """
+        Операция 1arg < 2arg
+        """
+        return self.subs_count < other.subs_count
+
+    def __le__(self, other):
+        """
+        Операция 1arg <= 2arg
+        """
+        return self.subs_count <= other.subs_count
+
+    def __eq__(self, other):
+        """
+        Операция сравнения 1arg и 2arg
+        """
+        return self.subs_count == other.subs_count
+
     @classmethod
     def get_service(cls):
-        youtube = build('youtube', 'v3', developerKey=Channel.api_key)
+        youtube = build('youtube', 'v3', developerKey=cls.api_key)
         return youtube
 
     @staticmethod
@@ -49,7 +98,7 @@ class Channel:
 
     def print_info(self) -> None:
         """Выводит в консоль информацию о канале."""
-        Channel.printj(self.response)
+        self.printj(self.response)
         # playlists = youtube.playlists().list(channelId=self.channel_id,
         #                                      part='contentDetails,snippet',
         #                                      maxResults=50,
