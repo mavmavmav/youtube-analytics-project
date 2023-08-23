@@ -21,9 +21,9 @@ class Channel:
         self.title = data_info[0]['snippet']['title']
         self.description = data_info[0]['snippet']['description']
         self.url = f'https://www.youtube.com/channel/{channel_id}'
-        self.subs_count = data_info[0]['statistics']['subscriberCount']
-        self.video_count = data_info[0]['statistics']['videoCount']
-        self.view_count = data_info[0]['statistics']['viewCount']
+        self.subs_count = int(data_info[0]['statistics']['subscriberCount'])
+        self.video_count = int(data_info[0]['statistics']['videoCount'])
+        self.view_count = int(data_info[0]['statistics']['viewCount'])
 
 
     def __str__(self):
@@ -36,7 +36,7 @@ class Channel:
         """
         Операция сложения 1arg и 2arg
         """
-        return int(self.subs_count) + int(other.subs_count)
+        return self.subs_count + other.subs_count
 
     def __sub__(self, other):
         """
