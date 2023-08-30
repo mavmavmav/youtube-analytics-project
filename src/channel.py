@@ -9,7 +9,9 @@ class Channel:
     api_key: str = os.getenv('YT_API_KEY')
 
     def __init__(self, channel_id: str) -> None:
-        """Экземпляр инициализирует id канала. Дальше все данные будут подтягиваться по API."""
+        """Экземпляр инициализирует id канала.
+        Дальше все данные будут подтягиваться по API.
+        """
 
         youtube = self.get_service()
         response = youtube.channels().list(id=channel_id,
