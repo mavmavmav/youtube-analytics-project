@@ -9,16 +9,35 @@ youtube = build('youtube', 'v3', developerKey=api_key)
 class Video:
 
     def __init__(self, video_id):
-        video_response = youtube.videos().list(part='snippet,statistics,contentDetails,topicDetails',
-                                               id=video_id
-                                               ).execute()
-        self.video_response = video_response
+        self._video_id = video_id
+        self.title = None
+        self.url = None
+        self.total_views = None
+        self.like_count = None
+        self.init_func()
 
-        self.video_id: str = video_response['items'][0]['id']
-        self.video_title: str = video_response['items'][0]['snippet']['title']
-        self.video_url: str = 'https://youtu.be/' + self.video_id
-        self.view_count: int = video_response['items'][0]['statistics']['viewCount']
-        self.like_count: int = video_response['items'][0]['statistics']['likeCount']
+
+
+    @property
+    def video_id(self):
+        return self._video_id
+
+    @classmethod
+    def init_func(cls):
+        try:
+            video_response = youtube.videos().list(part='snippet,statistics,contentDetails,topicDetails',
+                                               id=cls.video_id
+                                               ).execute()
+            cls.title: str = video_response['items'][0]['snippet']['title']
+
+        except IndexError:
+            print('Неверный Video_ID')
+
+        else:
+            cls.url_video: str = 'https://www.youtube.com/watch?v=' + cls._video_id
+            cls.total_views: int = int(video_response['items'][0]['statistics']['viewCount'])
+            cls.like_count: int = int(video_response['items'][0]['statistics']['likeCount'])
+
 
     def to_json(self, filename):
         data = {
