@@ -22,21 +22,20 @@ class Video:
     def video_id(self):
         return self._video_id
 
-    @classmethod
-    def init_func(cls):
+    def init_func(self):
         try:
             video_response = youtube.videos().list(part='snippet,statistics,contentDetails,topicDetails',
-                                               id=cls.video_id
+                                               id=self.video_id
                                                ).execute()
-            cls.title: str = video_response['items'][0]['snippet']['title']
+            self.title: str = video_response['items'][0]['snippet']['title']
 
         except IndexError:
             print('Неверный Video_ID')
 
         else:
-            cls.url_video: str = 'https://www.youtube.com/watch?v=' + cls._video_id
-            cls.total_views: int = int(video_response['items'][0]['statistics']['viewCount'])
-            cls.like_count: int = int(video_response['items'][0]['statistics']['likeCount'])
+            self.url_video: str = 'https://www.youtube.com/watch?v=' + cls._video_id
+            self.total_views: int = int(video_response['items'][0]['statistics']['viewCount'])
+            self.like_count: int = int(video_response['items'][0]['statistics']['likeCount'])
 
 
     def to_json(self, filename):
