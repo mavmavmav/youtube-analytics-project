@@ -33,7 +33,7 @@ class Video:
             print('Неверный Video_ID')
 
         else:
-            self.url_video: str = 'https://www.youtube.com/watch?v=' + cls._video_id
+            self.url_video: str = 'https://www.youtube.com/watch?v=' + self._video_id
             self.total_views: int = int(video_response['items'][0]['statistics']['viewCount'])
             self.like_count: int = int(video_response['items'][0]['statistics']['likeCount'])
 
